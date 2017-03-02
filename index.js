@@ -1,12 +1,14 @@
 var request = require('request-promise')
 
-module.exports.create = (uri) => new Proxy({ uri: uri }, {
+module.exports.create = (uri) => new Proxy({ uri: uri.toString().replace(/\/$/, '') }, {
   get: (t, a) => (...args) => {
+    if (a === 'uri') return t.uri
     var r
-    if (a.toString().endsWith('!') || a.toString().endsWith('\u{1c3}')) {
-      r = request.post({ uri: uriConcat(t.uri, a.replace(/!|\u{1c3}/u, '')), form: encode(args), json: true })
+    if (this.isPostMethod(a)) {
+      a = this.postMethodName(a)
+      r = request.post({ uri: `${t.uri}/${a}`, form: this.encode(args), json: true })
     } else {
-      r = request({ uri: uriConcat(t.uri, a), qs: encode(args), json: true })
+      r = request({ uri: `${t.uri}/${a}`, qs: this.encode(args), json: true })
     }
     return r.catch(err => { throw digestError(err) })
   }
@@ -20,10 +22,9 @@ module.exports.encode = (args) => {
   }, {})
 }
 
-function uriConcat(uri, path) {
-  return uri.toString().endsWith('/') ? uri.toString() + path : uri.toString() + '/' + path
-}
+module.exports.isPostMethod = m => m.toString().endsWith('!') || m.toString().endsWith('\u{1c3}')
 
-function digestError (err) {
-  return new Error(err.message.replace(/.*io.duna.core.service.ServiceException: \[|]\"/g, ''))
-}
+module.exports.postMethodName = a => a.replace(/!|\u{1c3}/u, '')
+
+const digestError = err =>
+  new Error(err.message.replace(/.*io.duna.core.service.ServiceException: \[|]\"/g, ''))
