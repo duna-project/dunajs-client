@@ -4,6 +4,10 @@ var nock = require('nock')
 
 const c = client.create('http://test')
 
+it ('should returns uri', () => {
+  assert.equal('http://test', c.uri)
+})
+
 it ('should call service', () => {
   nock('http://test').get('/m').reply(200, 'ok')
   return c.m().then(data => assert.equal('ok', data))

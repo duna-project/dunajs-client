@@ -1,16 +1,18 @@
 var request = require('request-promise')
 
 module.exports.create = (uri) => new Proxy({ uri: uri.toString().replace(/\/$/, '') }, {
-  get: (t, a) => (...args) => {
+  get: (t, a) => {
     if (a === 'uri') return t.uri
-    var r
-    if (this.isPostMethod(a)) {
-      a = this.postMethodName(a)
-      r = request.post({ uri: `${t.uri}/${a}`, form: this.encode(args), json: true })
-    } else {
-      r = request({ uri: `${t.uri}/${a}`, qs: this.encode(args), json: true })
+    return (...args) => {
+      var r
+      if (this.isPostMethod(a)) {
+        a = this.postMethodName(a)
+        r = request.post({ uri: `${t.uri}/${a}`, form: this.encode(args), json: true })
+      } else {
+        r = request({ uri: `${t.uri}/${a}`, qs: this.encode(args), json: true })
+      }
+      return r.catch(err => { throw digestError(err) })
     }
-    return r.catch(err => { throw digestError(err) })
   }
 })
 
