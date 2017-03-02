@@ -1,0 +1,27 @@
+{
+  "name": "dunajs-client",
+  "version": "0.0.1",
+  "description": "Duna framework javascript client",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duna-project/dunajs-client.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/duna-project/dunajs-client/issues"
+  },
+  "homepage": "https://github.com/duna-project/dunajs-client#readme",
+  "dependencies": {
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "nock": "^9.0.9"
+  }
+}
