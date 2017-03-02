@@ -12,16 +12,16 @@ module.exports.create = (uri) => new Proxy({ uri: uri }, {
   }
 })
 
-function uriConcat(uri, path) {
-  return uri.toString().endsWith('/') ? uri.toString() + path : uri.toString() + '/' + path
-}
-
-function encode (args) {
+module.exports.encode = (args) => {
   if (args.length == 0) return {}
   return Object.keys(args[0]).reduce((o, f) => {
     o[f] = typeof args[0][f] === 'object' ? JSON.stringify(args[0][f]) : args[0][f]
     return o
   }, {})
+}
+
+function uriConcat(uri, path) {
+  return uri.toString().endsWith('/') ? uri.toString() + path : uri.toString() + '/' + path
 }
 
 function digestError (err) {
