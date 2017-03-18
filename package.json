@@ -1,6 +1,6 @@
 {
   "name": "dunajs-client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Duna framework javascript client",
   "main": "index.js",
   "scripts": {
