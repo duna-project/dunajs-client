@@ -29,4 +29,4 @@ module.exports.isPostMethod = m => m.toString().endsWith('!') || m.toString().en
 module.exports.postMethodName = a => a.replace(/!|\u{1c3}/u, '')
 
 const digestError = err =>
-  new Error(err.message.replace(/.*io.duna.core.service.ServiceException: \[|]\"/g, ''))
+  new Error(err.message.replace(/.*io.duna.core.service.ServiceException: (\[)?|]\"/g, ''))
